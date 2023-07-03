@@ -3,3 +3,11 @@ main: Lee1387\Guardian\Loader
 api: 5.0.0
 version: 0.0.1
 author: Lee1387
+
+permissions:
+  guardian.command:
+    default: op
+  guardian.command.chat:
+    default: op
+  guardian.command.freeze:
+    default: op
