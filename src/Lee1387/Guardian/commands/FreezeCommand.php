@@ -53,10 +53,7 @@ class FreezeCommand extends Command {
             return;
         }
 
-        if (SessionFactory::isFreeze($victim)) {
-            SessionFactory::cancelFreeze($victim);
-            SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §e" . $victim->getName() . "§7 was unfrozen by §a" . $player->getName());
-            return;
-        }
+        SessionFactory::cancelFreeze($victim);
+        SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §e" . $victim->getName() . "§7 was unfrozen by §a" . $player->getName());
     }
 }
