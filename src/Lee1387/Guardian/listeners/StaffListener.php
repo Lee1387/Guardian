@@ -29,7 +29,7 @@ use Lee1387\Guardian\utils\Prefixes;
 class StaffListener implements Listener 
 {
 
-    public function onPlayerJoin(PlayerJoinEvent $event): void 
+    public function onPlayerJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();
 
