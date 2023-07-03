@@ -40,12 +40,12 @@ class TeleportMenu extends SimpleForm {
             $world = $objective->getPosition()->getWorld();
 
             $player->teleport(new Position($x, $y, $z, $world));
-            $player->sendMessage(Prefixes::PLUGIN . "Successfully teleported to §e" . $objective->getName());
+            $player->sendMessage(Prefixes::PLUGIN . "Successfully Teleported To §e" . $objective->getName());
 
         });
         $this->setTitle("Player List");
         foreach (SessionUtils::getPlayers() as $player) {
-            $this->addButton($player->getName() . PHP_EOL . "Tap To Teleport", 0, "textures/ui/icon_steve", $player->getName());
+            $this->addButton($player->getName() . "\nTap To Teleport", 0, "textures/ui/icon_steve", $player->getName());
         }
         $this->addButton("Close", 0, "textures/ui/redX1", "close");
     }

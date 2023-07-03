@@ -22,22 +22,25 @@ class ChatCommand extends Command {
         $this->setDescription("Guardian Chat Command");
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void 
+    public function execute(CommandSender $player, string $commandLabel, array $args): void
     {
         if (!$player instanceof Player) return;
 
         if (!$this->testPermission($player)) {
-            $player->sendMessage(Prefixes::PLUGIN . "You don't have permission to use this.");
+            $player->sendMessage(Prefixes::PLUGIN . "You dont have permission to use this.");
             return;
         }
 
         if (!SessionFactory::isChat($player)) {
             SessionFactory::sendChat($player);
-            $player->sendMessage(Prefixes::PLUGIN . "You have entered into StaffChat.");
+            $player->sendMessage(Prefixes::PLUGIN . "You have entered StaffChat");
             return;
         }
 
-        SessionFactory::cancelChat($player);
-        $player->sendMessage(Prefixes::PLUGIN . "You have exited StaffChat.");
+        if (SessionFactory::isChat($player)) {
+            SessionFactory::cancelChat($player);
+            $player->sendMessage(Prefixes::PLUGIN . "You have exited StaffChat");
+            return;
+        }
     }
 }

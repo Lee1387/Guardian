@@ -21,12 +21,12 @@ class FreezeCommand extends Command {
         $this->setDescription("Guardian Freeze Command");
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void 
+    public function execute(CommandSender $player, string $commandLabel, array $args): void
     {
         if (!$player instanceof Player) return;
 
         if (!$this->testPermission($player)) {
-            $player->sendMessage(Prefixes::PLUGIN . "You don't have permission to use this.");
+            $player->sendMessage(Prefixes::PLUGIN . "You dont have permission to use this.");
             return;
         }
 
@@ -38,7 +38,7 @@ class FreezeCommand extends Command {
         $victim = SessionUtils::getPlayerByPrefix($args[0]);
 
         if (!$victim instanceof Player) {
-            $player->sendMessage(Prefixes::FREEZE . "This player is not online.");
+            $player->sendMessage(Prefixes::FREEZE . "This player is not online");
             return;
         }
 
@@ -50,10 +50,13 @@ class FreezeCommand extends Command {
         if (!SessionFactory::isFreeze($victim)) {
             SessionFactory::sendFreeze($victim);
             SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §e" . $victim->getName() . "§7 was frozen by §a" . $player->getName());
-            return; 
+            return;
         }
 
-        SessionFactory::cancelFreeze($victim);
-        SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §e" . $victim->getName() . "§7 was unfrozen by §a" . $player->getName());
+        if (SessionFactory::isFreeze($victim)) {
+            SessionFactory::cancelFreeze($victim);
+            SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §e" . $victim->getName() . "§7 was unfrozen by §a" . $player->getName());
+            return;
+        }
     }
 }

@@ -21,7 +21,7 @@ use Lee1387\Guardian\utils\Prefixes;
 
 class ItemListener implements Listener {
 
-    public function onItemUse(PlayerItemUseEvent $event): void 
+    public function onItemUse(PlayerItemUseEvent $event)
     {
         $player = $event->getPlayer();
 
@@ -42,7 +42,7 @@ class ItemListener implements Listener {
             }
 
             SessionFactory::sendVanish($player);
-            $player->sendMessage(Prefixes::PLUGIN . "You have entered Vanish Mode.");
+            $player->sendMessage(Prefixes::PLUGIN . "You have entered Vanish Mode");
             $player->getInventory()->setItem(4, new UnVanish());
             foreach (SessionUtils::getPlayers() as $players) {
                 if (SessionFactory::isVanish($players)) {
@@ -61,7 +61,7 @@ class ItemListener implements Listener {
             }
 
             SessionFactory::cancelVanish($player);
-            $player->sendMessage(Prefixes::PLUGIN . "You have exited Vanish Mode.");
+            $player->sendMessage(Prefixes::PLUGIN . "You have exited Vanish Mode");
             $player->getInventory()->setItem(4, new Vanish());
             $player->getEffects()->clear();
             foreach (SessionUtils::getPlayers() as $players) {
@@ -106,11 +106,11 @@ class ItemListener implements Listener {
                 return;
             }
 
-            $player->sendMessage(Prefixes::PLUGIN . "Not enough players connected.");
+            $player->sendMessage(Prefixes::PLUGIN . "Not enough players connected");
         }
     }
 
-    public function onPlayerHit(EntityDamageByEntityEvent $event): void 
+    public function onPlayerHit(EntityDamageByEntityEvent $event)
     {
         $victim = $event->getEntity();
         $player = $event->getDamager();
@@ -138,9 +138,14 @@ class ItemListener implements Listener {
                 return;
             }
 
-            SessionFactory::cancelFreeze($victim);
-            SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §a" . $victim->getName() . " §7Was unfrozen by §e" . $player->getName());
-            $victim->getEffects()->clear();
+            if (SessionFactory::isFreeze($victim)) {
+                SessionFactory::cancelFreeze($victim);
+                SessionUtils::broadcastMessage(Prefixes::FREEZE . "Player §a" . $victim->getName() . " §7Was unfrozen by §e" . $player->getName());
+                $victim->getEffects()->clear();
+                $event->cancel();
+                return;
+            }
+
             $event->cancel();
             return;
         }
@@ -179,9 +184,10 @@ class ItemListener implements Listener {
         }
     }
 
-    public function onMove(PlayerMoveEvent $event): void 
+    public function onMove(PlayerMoveEvent $event): void
     {
         $player = $event->getPlayer();
+
 
         if (SessionFactory::isFreeze($player)) {
             $event->cancel();

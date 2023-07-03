@@ -128,4 +128,5 @@ class CustomForm extends Form {
     private function addContent(array $content) : void {
         $this->data["content"][] = $content;
     }
+    
 }

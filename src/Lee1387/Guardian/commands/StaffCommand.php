@@ -18,17 +18,17 @@ class StaffCommand extends Command {
 
         $this->setPermission(Permissions::MAIN_COMMAND);
 
-        $this->setAliases(["mod", "umod", "staffmode"]);
+        $this->setAliases(["mod", "staffmode"]);
 
         $this->setDescription("Guardian Command");
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void 
+    public function execute(CommandSender $player, string $commandLabel, array $args): void
     {
         if (!$player instanceof Player) return;
 
         if (!$this->testPermission($player)) {
-            $player->sendMessage(Prefixes::PLUGIN . "You don't have permission to use this.");
+            $player->sendMessage(Prefixes::PLUGIN . "You dont have permission to use this.");
             return;
         }
 
@@ -38,16 +38,19 @@ class StaffCommand extends Command {
             $player->setGamemode(GameMode::SURVIVAL());
             $player->setHealth($player->getMaxHealth());
             $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
-            $player->sendMessage(Prefixes::PLUGIN . "You have entered Staff Mode");
+            $player->sendMessage(Prefixes::PLUGIN . "You have entered StaffMode");
             return;
         }
 
-        SessionFactory::unregister($player);
-        SessionFactory::cancelVanish($player);
-        $player->setAllowFlight(false);
-        $player->setFlying(false);
-        $player->setGamemode(GameMode::SURVIVAL());
-        $player->getEffects()->clear();
-        $player->sendMessage(Prefixes::PLUGIN . "You have exited Staff Mode");
+        if (SessionFactory::isRegistered($player)) {
+            SessionFactory::unregister($player);
+            SessionFactory::cancelVanish($player);
+            $player->setAllowFlight(false);
+            $player->setFlying(false);
+            $player->setGamemode(GameMode::SURVIVAL());
+            $player->getEffects()->clear();
+            $player->sendMessage(Prefixes::PLUGIN . "You have exited StaffMode");
+            return;
+        }
     }
 }
